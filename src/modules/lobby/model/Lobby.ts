@@ -1,5 +1,5 @@
-import { User } from '@/modules/user/model/User';
-import { v4 as uuidV4 } from 'uuid';
+import { User } from '@user/model/User';
+import { v4 } from 'uuid';
 
 interface ILobbyConstructorDTO {
   host: User;
@@ -13,7 +13,7 @@ class Lobby {
   created_at: Date;
 
   constructor({ host, code }: ILobbyConstructorDTO) {
-    this.id = uuidV4();
+    this.id = v4();
     this.created_at = new Date();
     this.host = host;
     this.code = code;

@@ -1,4 +1,4 @@
-import { v4 as uuidV4 } from 'uuid';
+import { v4 } from 'uuid';
 
 interface IUserConstructorDTO {
   nickname: string;
@@ -10,7 +10,7 @@ class User {
   created_at: Date;
 
   constructor({ nickname }: IUserConstructorDTO) {
-    this.id = uuidV4();
+    this.id = v4();
     this.created_at = new Date();
     this.nickname = nickname;
   }

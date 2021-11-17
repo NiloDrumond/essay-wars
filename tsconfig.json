@@ -4,9 +4,9 @@
     "paths": {
       // "@/*": ["./src/*"],
       "@user/*": ["./src/modules/user/*"],
+      "@game/*": ["./src/modules/game/*"],
       "@lobby/*": ["./src/modules/lobby/*"]
     },
-    "typeRoots": ["./src/@types"],
     "target": "es6",
     "module": "commonjs",
     "moduleResolution": "node",
@@ -25,7 +25,7 @@
     "sourceMap": true,
     "outDir": "./dist/tsc/",
     "types": ["node"],
-    "lib": ["ES6", "DOM", "ES2021.String"]
+    "lib": ["ES6", "DOM"]
   },
   "include": ["src/**/*.ts", "src/@types"],
   "exclude": ["node_modules"]
