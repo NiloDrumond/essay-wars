@@ -1,4 +1,4 @@
-import { Match } from '@game/model/Match';
+import { MatchManager } from '@game/core/MatchManager';
 import { User } from '@user/model/User';
 
 interface ICreateMatchDTO {
@@ -6,8 +6,8 @@ interface ICreateMatchDTO {
 }
 
 interface IMatchesRepository {
-  list(): Match[];
-  create(data: ICreateMatchDTO): Match;
+  list(): MatchManager[];
+  create(data: ICreateMatchDTO): MatchManager;
 }
 
 export { ICreateMatchDTO, IMatchesRepository };
