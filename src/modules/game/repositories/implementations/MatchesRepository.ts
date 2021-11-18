@@ -1,13 +1,15 @@
-import { CODE_RETRIES, INITIAL_HP } from '@game/constants';
+import { CODE_RETRIES } from '@game/constants';
 import { MatchManager } from '@game/core/MatchManager';
 import { io } from '@game/infra/io';
-import { Board } from '@game/model/Board';
 import { Player } from '@game/model/Player';
 import { generateCode } from '@game/services/generateCode';
-import { User } from '@user/model/User';
 import { Socket } from 'socket.io';
 import { Match } from '../../model/Match';
-import { IMatchesRepository, ICreateMatchDTO } from '../IMatchesRepository';
+import {
+  IMatchesRepository,
+  ICreateMatchDTO,
+  IJoinMatchDTO,
+} from '../IMatchesRepository';
 
 type OnPlayerConnection = (id: string, socket: Socket) => void;
 
@@ -36,10 +38,6 @@ class MatchesRepository implements IMatchesRepository {
     return MatchesRepository.INSTANCE;
   }
 
-  private initializePlayer(user: User): Player {
-    return new Player({ user });
-  }
-
   private subPlayerConnection(
     callback: (id: string, socket: Socket) => void,
   ): void {
@@ -50,7 +48,7 @@ class MatchesRepository implements IMatchesRepository {
     return this.matches.find((m) => m.match.code === code);
   }
 
-  private generateCode(): string {
+  private getCode(): string {
     for (let i = 0; i < CODE_RETRIES; i++) {
       const code = generateCode();
       const existing = this.findByCode(code);
@@ -61,19 +59,26 @@ class MatchesRepository implements IMatchesRepository {
     throw new Error('Unable to generate lobby code');
   }
 
-  create({ users }: ICreateMatchDTO): MatchManager {
-    const players: Player[] = [];
-    for (let i = 0; i < users.length; i++) {
-      players.push(this.initializePlayer(users[i]));
-    }
-    const code = generateCode();
-    const match = new Match({ players, hostId: players[0].id, code });
+  create({ user }: ICreateMatchDTO): Player {
+    const player = new Player({ user });
+    const code = this.getCode();
+    const match = new Match({ host: player, code });
     const matchManager = new MatchManager({
       match,
       subPlayerConnection: this.subPlayerConnection,
     });
     this.matches.push(matchManager);
-    return matchManager;
+    return player;
+  }
+
+  join({ code, user }: IJoinMatchDTO): Player {
+    const match = this.findByCode(code);
+    if (!match) {
+      throw new Error('unable to find match');
+    }
+    const player = new Player({ user });
+    match.connectPlayer(player);
+    return player;
   }
 
   list(): MatchManager[] {

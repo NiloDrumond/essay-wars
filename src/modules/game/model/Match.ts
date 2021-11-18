@@ -2,8 +2,7 @@ import { Player } from './Player';
 import { v4 } from 'uuid';
 
 interface IMatchConstructorDTO {
-  players: Player[];
-  hostId: string;
+  host: Player;
   code: string;
 }
 
@@ -14,12 +13,12 @@ class Match {
   onGoing: boolean;
   players: Player[];
 
-  constructor({ players, hostId, code }: IMatchConstructorDTO) {
+  constructor({ host, code }: IMatchConstructorDTO) {
     this.id = v4();
     this.code = code;
     this.onGoing = false;
-    this.players = players;
-    this.hostId = hostId;
+    this.players = [host];
+    this.hostId = host.id;
   }
 }
 
