@@ -11,11 +11,8 @@ class MatchManager {
   public match: Match;
 
   private onPlayerConnection(id: string, socket: Socket): void {
-    for (let i = 0; i < this.match.players.length; i++) {
-      const player = this.match.players[i];
-      if (id === player.id) {
-        player.socket = socket;
-      }
+    if (this.match.players[id]) {
+      this.match.players[id].socket = socket;
     }
   }
 
@@ -25,7 +22,7 @@ class MatchManager {
   }
 
   public connectPlayer(player: Player): void {
-    this.match.players.push(player);
+    this.match.players[player.id] = player;
   }
 }
 

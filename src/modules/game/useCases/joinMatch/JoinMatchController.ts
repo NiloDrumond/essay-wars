@@ -3,7 +3,7 @@ import { Request, Response } from 'express';
 import { JoinMatchUseCase } from './JoinMatchUseCase';
 
 class JoinMatchController {
-  constructor(private createMatchUseCase: JoinMatchUseCase) {}
+  constructor(private joinMatchUseCase: JoinMatchUseCase) {}
 
   handle(request: Request, response: Response): Response {
     const { authorization } = request.headers;
@@ -13,7 +13,7 @@ class JoinMatchController {
       return response.status(401).send('No authorization id');
     }
 
-    const Match = this.createMatchUseCase.execute({
+    const Match = this.joinMatchUseCase.execute({
       userId: authorization,
       code,
     });
