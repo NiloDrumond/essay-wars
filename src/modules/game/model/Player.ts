@@ -1,6 +1,6 @@
 import { INITIAL_HP } from '@game/constants';
+import { MySocket } from '@game/infra/types';
 import { User } from '@user/model/User';
-import { Socket } from 'socket.io';
 import { v4 } from 'uuid';
 import { Board } from './Board';
 
@@ -14,7 +14,7 @@ class Player {
   hp: number;
   board: Board;
   created_at: Date;
-  socket?: Socket;
+  socket?: MySocket;
 
   constructor({ user }: IPlayerConstructorDTO) {
     this.id = v4();

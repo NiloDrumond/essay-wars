@@ -7,21 +7,26 @@ interface IRequest {
   code: string;
 }
 
+interface IResponse {
+  player: Player;
+  matchId: string;
+}
+
 class JoinMatchUseCase {
   constructor(
     private matchesRepository: IMatchesRepository,
     private usersRepository: IUsersRepository,
   ) {}
 
-  execute({ userId, code }: IRequest): Player {
+  execute({ userId, code }: IRequest): IResponse {
     const user = this.usersRepository.findById(userId);
     if (!user) {
       throw new Error('user not found');
     }
 
-    const player = this.matchesRepository.join({ user, code });
+    const { matchId, player } = this.matchesRepository.join({ user, code });
 
-    return player;
+    return { matchId, player };
   }
 }
 

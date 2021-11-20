@@ -6,21 +6,26 @@ interface IRequest {
   userId: string;
 }
 
+interface IResponse {
+  player: Player;
+  matchId: string;
+}
+
 class CreateMatchUseCase {
   constructor(
     private matchesRepository: IMatchesRepository,
     private usersRepository: IUsersRepository,
   ) {}
 
-  execute({ userId }: IRequest): Player {
+  execute({ userId }: IRequest): IResponse {
     const user = this.usersRepository.findById(userId);
     if (!user) {
       throw new Error('user not found');
     }
 
-    const player = this.matchesRepository.create({ user });
+    const { player, matchId } = this.matchesRepository.create({ user });
 
-    return player;
+    return { player, matchId };
   }
 }
 

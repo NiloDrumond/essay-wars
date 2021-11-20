@@ -10,10 +10,16 @@ interface IJoinMatchDTO {
   code: string;
   user: User;
 }
+
+export interface IMatchResponseDTO {
+  player: Player;
+  matchId: string;
+}
+
 interface IMatchesRepository {
   list(): MatchManager[];
-  create(data: ICreateMatchDTO): Player;
-  join(data: IJoinMatchDTO): Player;
+  create(data: ICreateMatchDTO): IMatchResponseDTO;
+  join(data: IJoinMatchDTO): IMatchResponseDTO;
 }
 
 export { ICreateMatchDTO, IMatchesRepository, IJoinMatchDTO };

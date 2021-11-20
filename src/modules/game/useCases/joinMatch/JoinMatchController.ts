@@ -13,12 +13,12 @@ class JoinMatchController {
       return response.status(401).send('No authorization id');
     }
 
-    const Match = this.joinMatchUseCase.execute({
+    const { matchId, player } = this.joinMatchUseCase.execute({
       userId: authorization,
       code,
     });
 
-    return response.status(201).json({ Match });
+    return response.status(201).json({ matchId, player });
   }
 }
 
