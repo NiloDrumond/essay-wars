@@ -49,7 +49,7 @@ class MatchesRepository implements IMatchesRepository {
       match,
     });
     this.matches.push(matchManager);
-    return { player, matchId: match.id };
+    return { player, match: { id: match.id, code: match.code } };
   }
 
   join({ code, user }: IJoinMatchDTO): IMatchResponseDTO {
@@ -59,7 +59,10 @@ class MatchesRepository implements IMatchesRepository {
     }
     const player = new Player({ user });
     matchManager.addPlayer(player);
-    return { player, matchId: matchManager.match.id };
+    return {
+      player,
+      match: { id: matchManager.match.id, code: matchManager.match.code },
+    };
   }
 
   list(): MatchManager[] {

@@ -1,4 +1,5 @@
 import { MatchManager } from '@game/core/MatchManager';
+import { Match } from '@game/model/Match';
 import { Player } from '@game/model/Player';
 import { User } from '@user/model/User';
 
@@ -13,7 +14,7 @@ interface IJoinMatchDTO {
 
 export interface IMatchResponseDTO {
   player: Player;
-  matchId: string;
+  match: Pick<Match, 'code' | 'id'>;
 }
 
 interface IMatchesRepository {

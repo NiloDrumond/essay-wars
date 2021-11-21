@@ -12,11 +12,11 @@ class CreateMatchController {
       return response.status(401).send('No authorization id');
     }
 
-    const { player, matchId } = this.createMatchUseCase.execute({
+    const { player, match } = this.createMatchUseCase.execute({
       userId: authorization,
     });
 
-    return response.status(201).json({ player, matchId });
+    return response.status(201).json({ player, match });
   }
 }
 

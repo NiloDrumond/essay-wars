@@ -1,3 +1,4 @@
+import { Match } from '@game/model/Match';
 import { Player } from '@game/model/Player';
 import { IMatchesRepository } from '@game/repositories/IMatchesRepository';
 import { IUsersRepository } from '@user/repositories/IUsersRepository';
@@ -8,7 +9,7 @@ interface IRequest {
 
 interface IResponse {
   player: Player;
-  matchId: string;
+  match: Pick<Match, 'code' | 'id'>;
 }
 
 class CreateMatchUseCase {
@@ -23,9 +24,9 @@ class CreateMatchUseCase {
       throw new Error('user not found');
     }
 
-    const { player, matchId } = this.matchesRepository.create({ user });
+    const { player, match } = this.matchesRepository.create({ user });
 
-    return { player, matchId };
+    return { player, match };
   }
 }
 
