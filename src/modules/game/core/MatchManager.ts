@@ -90,13 +90,16 @@ class MatchManager {
   }
 
   private async tickCycle() {
-    while (this.match.onGoing) {
+    for (let i = 0; i <= Infinity; i++) {
       if (this.ticksPassed % SPAWN_EVERY_X_TICK === 0) {
         this.spawnWord();
       }
       this.tick();
       this.ticksPassed += 1;
       await sleep(100);
+      if (this.match.onGoing) {
+        i = Infinity;
+      }
     }
   }
 
