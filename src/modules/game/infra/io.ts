@@ -1,5 +1,5 @@
 import { Server } from 'socket.io';
-import { ClientToServerEvents, ServerToClientEvents } from './types';
+import { ClientToServerEvents, ServerToClientEvents } from '../../game/core/interfaces/events';
 
 const io = new Server<ClientToServerEvents, ServerToClientEvents>();
 
