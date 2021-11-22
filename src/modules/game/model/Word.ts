@@ -8,6 +8,7 @@ interface IWordConstructorDTO {
 class Word {
   word: string;
   id: string;
+  createdAt: Date;
   targetId: string;
   position: number;
 
@@ -16,6 +17,7 @@ class Word {
     this.word = word;
     this.targetId = targetId;
     this.position = 0;
+    this.createdAt = new Date();
   }
 }
 

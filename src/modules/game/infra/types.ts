@@ -1,12 +1,8 @@
-import { MessageEventData } from '@game/core/interfaces/events';
-import { Socket } from 'socket.io';
-
-export interface ServerToClientEvents {
-  message: (data: MessageEventData) => void;
-}
-
-export interface ClientToServerEvents extends ServerToClientEvents {
-  start_match: () => void;
-}
+import {
+  ClientToServerEvents,
+  ServerToClientEvents,
+} from '@game/core/interfaces/events';
+import { Namespace, Socket } from 'socket.io';
 
 export type MySocket = Socket<ClientToServerEvents, ServerToClientEvents>;
+export type MyNamespace = Namespace<ClientToServerEvents, ServerToClientEvents>;
