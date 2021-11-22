@@ -1,4 +1,4 @@
-import { WORD_DURATION } from '@game/constants';
+import { SPAWN_EVERY_X_TICK, WORD_DURATION } from '@game/constants';
 import { io } from '@game/infra/io';
 import { MyNamespace, MySocket } from '@game/infra/types';
 import { Match } from '@game/model/Match';
@@ -7,6 +7,7 @@ import { Word } from '@game/model/Word';
 import { generateWord } from '@game/services/generateWord';
 import { Socket } from 'socket.io';
 import { lerp } from 'src/utils/lerp';
+import { sleep } from 'src/utils/sleep';
 import { MatchUtils } from './utils';
 
 interface IMatchManagerConstructorDTO {
@@ -15,6 +16,7 @@ interface IMatchManagerConstructorDTO {
 
 class MatchManager {
   public match: Match;
+  private ticksPassed = 0;
   private nsp: MyNamespace;
 
   private handleWordFinished(socket: Socket, wordId: string) {
@@ -64,39 +66,44 @@ class MatchManager {
     }
   }
 
-  private async spawnCycle() {
-    if (this.match.onGoing) {
-      const players = Object.values(this.match.players);
-      for (let i = 0; i < players.length; i++) {
-        const word = generateWord(players[i].id);
-        players[i].board.addWord(word);
-      }
-      setTimeout(this.spawnCycle, 5000);
+  private async spawnWord() {
+    const players = Object.values(this.match.players);
+    for (let i = 0; i < players.length; i++) {
+      const word = generateWord(players[i].id);
+      players[i].board.addWord(word);
     }
   }
 
   private async tick() {
-    if (this.match.onGoing) {
-      const players = Object.values(this.match.players);
-      for (let i = 0; i < players.length; i++) {
-        const player = players[i];
-        for (let j = 0; j < player.board.words.length; i++) {
-          this.moveWord(player.board.words[j]);
-        }
-        if (player.socket) {
-          player.socket.emit('update_player', player);
-        }
+    const players = Object.values(this.match.players);
+    for (let i = 0; i < players.length; i++) {
+      const player = players[i];
+      for (let j = 0; j < player.board.words.length; i++) {
+        this.moveWord(player.board.words[j]);
       }
-      setTimeout(this.tick, 100);
+      if (player.socket) {
+        player.socket.emit('update_player', player);
+      }
+    }
+  }
+
+  private async tickCycle() {
+    while (this.match.onGoing) {
+      if (this.ticksPassed % SPAWN_EVERY_X_TICK === 0) {
+        this.spawnWord();
+      }
+      this.tick();
+      this.ticksPassed += 1;
+      await sleep(100);
     }
   }
 
   private async startMatch(): Promise<void> {
     this.match.onGoing = true;
     this.nsp.emit('start_match', this.match);
+    this.ticksPassed = 0;
     setTimeout(() => {
-      this.spawnCycle();
-      this.tick();
+      this.tickCycle();
     }, 5000);
   }
 
