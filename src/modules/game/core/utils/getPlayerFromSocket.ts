@@ -11,10 +11,10 @@ export function getPlayerFromSocket({
   match,
   socket,
 }: IGetPlayerFromSocketDTO): Player | undefined {
-  const { auth } = socket.handshake;
-  if (typeof auth === 'string') {
-    if (match.players[auth]) {
-      return match.players[auth];
+  const { playerId } = socket.handshake.auth;
+  if (typeof playerId === 'string') {
+    if (match.players[playerId]) {
+      return match.players[playerId];
     }
   }
 }
