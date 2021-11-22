@@ -3,6 +3,10 @@ import { ClientToServerEvents, ServerToClientEvents } from './types';
 
 const io = new Server<ClientToServerEvents, ServerToClientEvents>();
 
-io.listen(3000);
+io.listen(3000, {
+    cors: {
+        origin: "*"
+    }
+});
 
 export { io };
