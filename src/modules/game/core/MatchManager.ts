@@ -98,13 +98,20 @@ class MatchManager {
     }
   }
 
-  private async startMatch(): Promise<void> {
+  private startMatch(): void {
     this.match.onGoing = true;
+    const players = Object.values(this.match.players);
+    for (let i = 0; i < players.length; i++) {
+      const player = players[i];
+      if (player.socket) {
+        player.socket.emit('start_match', this.match);
+      }
+    }
     this.nsp.emit('start_match', this.match);
     this.ticksPassed = 0;
     setTimeout(() => {
       this.tickCycle();
-    }, 5000);
+    }, 500);
   }
 
   private handleStartEvent(socket: MySocket): void {
