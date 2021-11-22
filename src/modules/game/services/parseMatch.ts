@@ -1,18 +1,13 @@
-import { IMatchDTO, IPlayersDTO } from '@game/core/interfaces/events';
+import { IMatchDTO, IPlayerDTO } from '@game/core/interfaces/events';
 import { Match } from '@game/model/Match';
+import { parsePlayer } from './parsePlayer';
 
 function parseMatch(match: Match): IMatchDTO {
   const players = Object.values(match.players);
-  const newPlayers: IPlayersDTO = {};
+  const newPlayers: Record<string, IPlayerDTO> = {};
   for (let i = 0; i < players.length; i++) {
     const p = players[i];
-    newPlayers[p.id] = {
-      board: p.board,
-      created_at: p.created_at,
-      hp: p.hp,
-      id: p.id,
-      user: p.user,
-    };
+    newPlayers[p.id] = parsePlayer(p);
   }
   return {
     code: match.code,

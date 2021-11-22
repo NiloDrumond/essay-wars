@@ -6,6 +6,7 @@ import { Player } from '@game/model/Player';
 import { Word } from '@game/model/Word';
 import { generateWord } from '@game/services/generateWord';
 import { parseMatch } from '@game/services/parseMatch';
+import { parsePlayer } from '@game/services/parsePlayer';
 import { Socket } from 'socket.io';
 import { lerp } from 'src/utils/lerp';
 import { sleep } from 'src/utils/sleep';
@@ -41,7 +42,7 @@ class MatchManager {
       const p = players[i];
       if (p.socket) {
         if (p.id === player.id) {
-          p.socket.emit('update_player', player);
+          p.socket.emit('update_player', parsePlayer(player));
         } else {
           p.socket.emit('other_player_update', {
             hp: player.hp,
@@ -83,7 +84,7 @@ class MatchManager {
         this.moveWord(player.board.words[j]);
       }
       if (player.socket) {
-        player.socket.emit('update_player', player);
+        player.socket.emit('update_player', parsePlayer(player));
       }
     }
   }
