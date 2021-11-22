@@ -5,6 +5,7 @@ import { Match } from '@game/model/Match';
 import { Player } from '@game/model/Player';
 import { Word } from '@game/model/Word';
 import { generateWord } from '@game/services/generateWord';
+import { parseMatch } from '@game/services/parseMatch';
 import { Socket } from 'socket.io';
 import { lerp } from 'src/utils/lerp';
 import { sleep } from 'src/utils/sleep';
@@ -100,14 +101,7 @@ class MatchManager {
 
   private startMatch(): void {
     this.match.onGoing = true;
-    const players = Object.values(this.match.players);
-    for (let i = 0; i < players.length; i++) {
-      const player = players[i];
-      if (player.socket) {
-        player.socket.emit('start_match', this.match);
-      }
-    }
-    this.nsp.emit('start_match', this.match);
+    this.nsp.emit('start_match', parseMatch(this.match));
     this.ticksPassed = 0;
     setTimeout(() => {
       this.tickCycle();

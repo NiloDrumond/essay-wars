@@ -7,11 +7,22 @@ export interface MessageEventData {
   text: string;
 }
 
+export type IPlayersDTO = Record<
+  string,
+  Pick<Player, 'board' | 'id' | 'created_at' | 'hp' | 'user'>
+>;
+export interface IMatchDTO {
+  id: string;
+  code: string;
+  onGoing: boolean;
+  players: IPlayersDTO;
+}
+
 export interface ServerToClientEvents {
   message: (data: MessageEventData) => void;
   update_player: (data: Player) => void;
   other_player_update: (data: Pick<Player, 'hp' | 'id'>) => void;
-  start_match: (match: Match) => void;
+  start_match: (match: IMatchDTO) => void;
 }
 
 export interface ClientToServerEvents extends ServerToClientEvents {
