@@ -129,7 +129,7 @@ class MatchManager {
       player.socket = socket;
       // While there isn't a ready and start match option:
       if (player.id !== this.match.hostId) {
-        this.nsp.emit('start_match', this.match);
+        this.startMatch();
       }
       socket.on('start_match', () => this.handleStartEvent(socket));
       socket.on('word_finished', (wordId) =>
