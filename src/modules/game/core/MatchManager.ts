@@ -68,7 +68,7 @@ class MatchManager {
     }
   }
 
-  private async spawnWord() {
+  private spawnWord() {
     const players = Object.values(this.match.players);
     for (let i = 0; i < players.length; i++) {
       const word = generateWord(players[i].id);
@@ -76,11 +76,11 @@ class MatchManager {
     }
   }
 
-  private async tick() {
+  private tick() {
     const players = Object.values(this.match.players);
     for (let i = 0; i < players.length; i++) {
       const player = players[i];
-      for (let j = 0; j < player.board.words.length; i++) {
+      for (let j = 0; j < player.board.words.length; j++) {
         this.moveWord(player.board.words[j]);
       }
       if (player.socket) {
@@ -90,14 +90,14 @@ class MatchManager {
   }
 
   private async tickCycle() {
-    for (let i = 0; i <= Infinity; i++) {
+    for (let i = 0; i < Infinity; i++) {
       if (this.ticksPassed % SPAWN_EVERY_X_TICK === 0) {
         this.spawnWord();
       }
       this.tick();
       this.ticksPassed += 1;
       await sleep(100);
-      if (this.match.onGoing) {
+      if (!this.match.onGoing) {
         i = Infinity;
       }
     }
