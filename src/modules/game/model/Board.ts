@@ -3,6 +3,7 @@ import { Word } from './Word';
 
 class Board {
   words: Word[];
+  private currentY = 0;
   attackWordsQueue: Word[];
 
   constructor() {
@@ -15,11 +16,12 @@ class Board {
   }
 
   public removeWord(id: string): Word {
-    const word = this.words.find((w) => w.id === id);
-    if (!word) {
+    const index = this.words.findIndex((w) => w.id === id);
+    if (index < 0) {
       throw new Error('unable to find word to delete');
     }
-    return word;
+    const word = this.words.splice(index, 1);
+    return word[0];
   }
 
   public popAttackWord(id: string): Word {
