@@ -5,6 +5,7 @@ import { Match } from '@game/model/Match';
 import { Player } from '@game/model/Player';
 import { Word } from '@game/model/Word';
 import { generateWord } from '@game/services/generateWord';
+import { getSpawnInterval } from '@game/services/getSpawnInterval';
 import { parseMatch } from '@game/services/parseMatch';
 import { parsePlayer } from '@game/services/parsePlayer';
 import { Socket } from 'socket.io';
@@ -19,6 +20,7 @@ interface IMatchManagerConstructorDTO {
 class MatchManager {
   public match: Match;
   private ticksPassed = 0;
+  private lastSpawnTick = 0;
   private spawnInterval = BASE_INTERVAL;
   private nsp: MyNamespace;
 
@@ -107,10 +109,10 @@ class MatchManager {
 
   private async tickCycle() {
     for (let i = 0; i < Infinity; i++) {
-      if (this.ticksPassed === this.spawnInterval) {
+      if (this.ticksPassed - this.lastSpawnTick >= this.spawnInterval) {
         this.spawnWord();
-        this.ticksPassed = 0;
-        this.spawnInterval = Math.max(this.spawnInterval - 5, 1);
+        this.lastSpawnTick = this.ticksPassed;
+        this.spawnInterval = getSpawnInterval(this.ticksPassed);
       }
       this.tick();
       this.ticksPassed += 1;
@@ -125,6 +127,8 @@ class MatchManager {
     this.match.onGoing = true;
     this.nsp.emit('start_match', parseMatch(this.match));
     this.ticksPassed = 0;
+    this.lastSpawnTick = 0;
+    this.spawnInterval = BASE_INTERVAL;
     setTimeout(() => {
       this.tickCycle();
     }, 500);
