@@ -4,6 +4,7 @@ import { Word } from './Word';
 class Board {
   words: Word[];
   private currentY = 0;
+  yMap: Record<string, number> = {};
   attackWordsQueue: Word[];
 
   constructor() {
@@ -13,6 +14,7 @@ class Board {
 
   public addWord(word: Word): void {
     this.words.push(word);
+    this.yMap[word.id] = this.currentY++;
   }
 
   public removeWord(id: string): Word {
@@ -21,6 +23,7 @@ class Board {
       throw new Error('unable to find word to delete');
     }
     const word = this.words.splice(index, 1);
+    delete this.yMap[word[0].id];
     return word[0];
   }
 
