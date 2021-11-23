@@ -72,6 +72,7 @@ class MatchManager {
     const expire = new Date(word.createdAt.getTime() + WORD_DURATION);
     if (expire.getTime() <= now.getTime()) {
       this.damagePlayer(this.match.players[word.targetId], word.word.length);
+      this.match.players[word.targetId].board.removeWord(word.id);
     } else {
       const position = lerp(
         0,
