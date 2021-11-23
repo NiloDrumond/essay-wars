@@ -89,8 +89,12 @@ class MatchManager {
 
   private spawnWord() {
     const players = Object.values(this.match.players);
+    const text = generateWord();
     for (let i = 0; i < players.length; i++) {
-      const word = generateWord(players[i].id);
+      const word = new Word({
+        word: text,
+        targetId: players[i].id,
+      });
       players[i].board.addWord(word);
     }
   }
