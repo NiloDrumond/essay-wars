@@ -16,7 +16,7 @@ class Board {
     this.words.push(word);
     this.yMap[word.id] = this.currentY;
     this.currentY += 10;
-    if (this.currentY > 100) this.currentY = 0;
+    if (this.currentY === 100) this.currentY = 0;
   }
 
   public removeWord(id: string): Word {
