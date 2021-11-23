@@ -61,7 +61,7 @@ class MatchManager {
     } else {
       const position = lerp(
         0,
-        WORD_DURATION,
+        100,
         (now.getTime() - word.createdAt.getTime()) / WORD_DURATION,
       );
       word.position = position;
@@ -163,7 +163,9 @@ class MatchManager {
   }
 
   public addPlayer(player: Player): void {
-    this.match.players[player.id] = player;
+    if (!this.match.onGoing) {
+      this.match.players[player.id] = player;
+    }
   }
 }
 
