@@ -1,4 +1,4 @@
-import { SPAWN_EVERY_X_TICK, WORD_DURATION } from '@game/constants';
+import { BASE_INTERVAL, WORD_DURATION } from '@game/constants';
 import { io } from '@game/infra/io';
 import { MyNamespace, MySocket } from '@game/infra/types';
 import { Match } from '@game/model/Match';
@@ -19,6 +19,7 @@ interface IMatchManagerConstructorDTO {
 class MatchManager {
   public match: Match;
   private ticksPassed = 0;
+  private spawnInterval = BASE_INTERVAL;
   private nsp: MyNamespace;
 
   private handleWordFinished(socket: Socket, wordId: string) {
@@ -106,8 +107,10 @@ class MatchManager {
 
   private async tickCycle() {
     for (let i = 0; i < Infinity; i++) {
-      if (this.ticksPassed % SPAWN_EVERY_X_TICK === 0) {
+      if (this.ticksPassed === this.spawnInterval) {
         this.spawnWord();
+        this.ticksPassed = 0;
+        this.spawnInterval -= 1;
       }
       this.tick();
       this.ticksPassed += 1;
