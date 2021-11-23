@@ -17,7 +17,7 @@
     "my-cli-tool": "./dist/esbuild/cli.js"
   },
   "scripts": {
-    "server": "ts-node -r tsconfig-paths/register src/server.ts",
+    "server": "ts-node -r tsconfig-paths/register src/index.ts",
     "lint": "eslint src/ --ext .js,.jsx,.ts,.tsx",
     "clean": "rm -rf dist build package",
     "ts-node": "ts-node --transpile-only",
