@@ -1,4 +1,4 @@
-import { ATTACK_WORD_AVAILABLE } from '@game/constants';
+import { ATTACK_WORD_AVAILABLE } from '@game/data/constants';
 import { Word } from './Word';
 
 class Board {

@@ -1,4 +1,4 @@
-import { CODE_RETRIES } from '@game/constants';
+import { CODE_RETRIES } from '@game/data/constants';
 import { MatchManager } from '@game/core/MatchManager';
 import { Player } from '@game/model/Player';
 import { generateCode } from '@game/services/generateCode';

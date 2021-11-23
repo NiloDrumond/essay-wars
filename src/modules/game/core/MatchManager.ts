@@ -1,4 +1,4 @@
-import { BASE_INTERVAL, WORD_DURATION } from '@game/constants';
+import { BASE_INTERVAL, WORD_DURATION } from '@game/data/constants';
 import { io } from '@game/infra/io';
 import { MyNamespace, MySocket } from '@game/infra/types';
 import { Match } from '@game/model/Match';
@@ -44,6 +44,7 @@ class MatchManager {
     }
     if (remaining < 2) {
       this.match.onGoing = false;
+      this.nsp.emit('message', { isError: false, text: 'match ended' });
     }
   }
 

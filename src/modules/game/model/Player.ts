@@ -1,4 +1,4 @@
-import { INITIAL_HP } from '@game/constants';
+import { INITIAL_HP } from '@game/data/constants';
 import { MySocket } from '@game/infra/types';
 import { User } from '@user/model/User';
 import { v4 } from 'uuid';
