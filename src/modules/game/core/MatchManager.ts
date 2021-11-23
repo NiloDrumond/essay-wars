@@ -31,9 +31,23 @@ class MatchManager {
     }
   }
 
+  private checkMatchEnded() {
+    const players = Object.values(this.match.players);
+    let remaining = 0;
+    for (let i = 0; i < players.length; i++) {
+      if (players[i].hp > 0) {
+        remaining++;
+      }
+    }
+    if (remaining < 2) {
+      this.match.onGoing = false;
+    }
+  }
+
   private damagePlayer(player: Player, dmg: number) {
     if (player.hp <= dmg) {
       player.hp = 0;
+      this.checkMatchEnded();
     } else {
       player.hp -= dmg;
     }
