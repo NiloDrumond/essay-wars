@@ -110,7 +110,7 @@ class MatchManager {
       if (this.ticksPassed === this.spawnInterval) {
         this.spawnWord();
         this.ticksPassed = 0;
-        this.spawnInterval = Math.min(this.spawnInterval - 5, 1);
+        this.spawnInterval = Math.max(this.spawnInterval - 5, 1);
       }
       this.tick();
       this.ticksPassed += 1;
