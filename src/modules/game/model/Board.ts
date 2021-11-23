@@ -22,7 +22,8 @@ class Board {
   public removeWord(id: string): Word {
     const index = this.words.findIndex((w) => w.id === id);
     if (index < 0) {
-      throw new Error('unable to find word to delete');
+      // throw new Error('unable to find word to delete');
+      console.log('unable to find word to delete');
     }
     const word = this.words.splice(index, 1);
     delete this.yMap[word[0].id];
