@@ -23,7 +23,7 @@
     "allowSyntheticDefaultImports": true,
     "experimentalDecorators": true,
     "sourceMap": true,
-    "outDir": "./dist/tsc/",
+    "outDir": "./public",
     "types": ["node"],
     "lib": ["ES6", "DOM"]
   },
