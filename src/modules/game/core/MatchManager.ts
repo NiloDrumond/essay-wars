@@ -168,6 +168,13 @@ class MatchManager {
     });
     if (player && player.id === this.match.hostId) {
       const players = Object.values(this.match.players);
+      if (players.length < 2) {
+        socket.emit('message', {
+          isError: true,
+          text: "you can't start a match alone.",
+        });
+        return;
+      }
       for (let i = 0; i < players.length; i++) {
         if (!players[i].socket) {
           socket.emit('message', {
@@ -189,9 +196,6 @@ class MatchManager {
     if (player) {
       player.socket = socket;
       // While there isn't a ready and start match option:
-      if (player.id !== this.match.hostId) {
-        this.startMatch();
-      }
       socket.on('start_match', () => this.handleStartEvent(socket));
       socket.on('word_finished', (wordId) =>
         this.handleWordFinished(socket, wordId),
