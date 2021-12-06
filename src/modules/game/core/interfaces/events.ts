@@ -29,4 +29,5 @@ export interface ServerToClientEvents {
 export interface ClientToServerEvents extends ServerToClientEvents {
   start_match: () => void;
   word_finished: (wordId: string) => void;
+  attack_word_finished: (wordId: string) => void;
 }

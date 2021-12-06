@@ -87,15 +87,37 @@ class MatchManager {
     }
   }
 
-  private spawnWord() {
+  private spawnWord(text: string) {
     const players = Object.values(this.match.players);
-    const text = generateWord();
     for (let i = 0; i < players.length; i++) {
       const word = new Word({
         word: text,
         targetId: players[i].id,
       });
       players[i].board.addWord(word);
+    }
+  }
+
+  private spawnAttackWord(playerId: string, text: string) {
+    const players = Object.values(this.match.players);
+    const otherPlayers = players.filter((p) => p.id !== playerId);
+    const randomPlayer =
+      otherPlayers[Math.floor(Math.random() * otherPlayers.length)];
+    const word = new Word({
+      word: text,
+      targetId: randomPlayer.id,
+    });
+    randomPlayer.board.addWord(word);
+  }
+
+  private handleAttackWordFinished(socket: Socket, wordId: string) {
+    const player = MatchUtils.getPlayerFromSocket({
+      match: this.match,
+      socket: socket,
+    });
+    if (player) {
+      const word = player.board.popAttackWord(wordId);
+      this.spawnAttackWord(player.id, word.word);
     }
   }
 
@@ -115,7 +137,7 @@ class MatchManager {
   private async tickCycle() {
     for (let i = 0; i < Infinity; i++) {
       if (this.ticksPassed - this.lastSpawnTick >= this.spawnInterval) {
-        this.spawnWord();
+        this.spawnWord(generateWord());
         this.lastSpawnTick = this.ticksPassed;
         this.spawnInterval = getSpawnInterval(this.ticksPassed);
       }
@@ -173,6 +195,9 @@ class MatchManager {
       socket.on('start_match', () => this.handleStartEvent(socket));
       socket.on('word_finished', (wordId) =>
         this.handleWordFinished(socket, wordId),
+      );
+      socket.on('attack_word_finished', (wordId) =>
+        this.handleAttackWordFinished(socket, wordId),
       );
     }
   }

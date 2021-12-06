@@ -1,4 +1,4 @@
-import { ATTACK_WORD_AVAILABLE } from '@game/data/constants';
+import { generateWord } from '@game/services/generateWord';
 import { Word } from './Word';
 
 class Board {
@@ -31,16 +31,15 @@ class Board {
   }
 
   public popAttackWord(id: string): Word {
-    for (let i = 0; i < ATTACK_WORD_AVAILABLE; i++) {
+    for (let i = 0; i < this.attackWordsQueue.length; i++) {
       const word = this.attackWordsQueue[i];
       if (word.id === id) {
-        this.attackWordsQueue = this.attackWordsQueue.splice(i, 1);
+        this.attackWordsQueue[i] = new Word({
+          targetId: '',
+          word: generateWord(),
+        });
         return word;
       }
-    }
-    const existing = this.attackWordsQueue.find((w) => w.id === id);
-    if (existing) {
-      throw new Error('word not available to be poped');
     }
     throw new Error('unable to find word');
   }
