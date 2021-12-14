@@ -203,6 +203,10 @@ class MatchManager {
         this.handleAttackWordFinished(socket, wordId),
       );
     }
+    this.nsp.emit(
+      'list_users',
+      Object.values(this.match.players).map((p) => p.user),
+    );
   }
 
   private listenToConnection() {
@@ -220,10 +224,6 @@ class MatchManager {
   public addPlayer(player: Player): void {
     if (!this.match.onGoing) {
       this.match.players[player.id] = player;
-      this.nsp.emit(
-        'list_users',
-        Object.values(this.match.players).map((p) => p.user),
-      );
     }
   }
 }
