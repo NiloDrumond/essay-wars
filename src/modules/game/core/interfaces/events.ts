@@ -24,7 +24,7 @@ export interface ServerToClientEvents {
   message: (data: MessageEventData) => void;
   update_player: (data: IPlayerDTO) => void;
   other_player_update: (data: Pick<Player, 'hp' | 'id'>) => void;
-  list_players: (data: User[]) => void;
+  list_users: (data: User[]) => void;
   start_match: (match: IMatchDTO) => void;
 }
 

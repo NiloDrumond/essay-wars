@@ -221,7 +221,7 @@ class MatchManager {
     if (!this.match.onGoing) {
       this.match.players[player.id] = player;
       this.nsp.emit(
-        'list_players',
+        'list_users',
         Object.values(this.match.players).map((p) => p.user),
       );
     }
