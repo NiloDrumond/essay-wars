@@ -195,7 +195,6 @@ class MatchManager {
     });
     if (player) {
       player.socket = socket;
-      // While there isn't a ready and start match option:
       socket.on('start_match', () => this.handleStartEvent(socket));
       socket.on('word_finished', (wordId) =>
         this.handleWordFinished(socket, wordId),
@@ -221,6 +220,10 @@ class MatchManager {
   public addPlayer(player: Player): void {
     if (!this.match.onGoing) {
       this.match.players[player.id] = player;
+      this.nsp.emit(
+        'list_players',
+        Object.values(this.match.players).map((p) => p.user),
+      );
     }
   }
 }

@@ -1,6 +1,7 @@
 import { Match } from '@game/model/Match';
 import { Player } from '@game/model/Player';
 import { Word } from '@game/model/Word';
+import { User } from '@user/model/User';
 
 export interface MessageEventData {
   isError: boolean;
@@ -23,6 +24,7 @@ export interface ServerToClientEvents {
   message: (data: MessageEventData) => void;
   update_player: (data: IPlayerDTO) => void;
   other_player_update: (data: Pick<Player, 'hp' | 'id'>) => void;
+  list_players: (data: User[]) => void;
   start_match: (match: IMatchDTO) => void;
 }
 
