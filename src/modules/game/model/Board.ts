@@ -5,11 +5,24 @@ class Board {
   words: Word[];
   private currentY = 0;
   yMap: Record<string, number> = {};
-  attackWordsQueue: Word[];
+  attackWords: Word[];
 
   constructor() {
     this.words = [];
-    this.attackWordsQueue = [];
+    this.attackWords = [
+      new Word({
+        targetId: '',
+        word: generateWord(),
+      }),
+      new Word({
+        targetId: '',
+        word: generateWord(),
+      }),
+      new Word({
+        targetId: '',
+        word: generateWord(),
+      }),
+    ];
   }
 
   public addWord(word: Word): void {
@@ -31,10 +44,10 @@ class Board {
   }
 
   public popAttackWord(id: string): Word {
-    for (let i = 0; i < this.attackWordsQueue.length; i++) {
-      const word = this.attackWordsQueue[i];
+    for (let i = 0; i < this.attackWords.length; i++) {
+      const word = this.attackWords[i];
       if (word.id === id) {
-        this.attackWordsQueue[i] = new Word({
+        this.attackWords[i] = new Word({
           targetId: '',
           word: generateWord(),
         });
@@ -45,7 +58,7 @@ class Board {
   }
 
   public populateAttackWords(words: Word[]): void {
-    this.attackWordsQueue = [...this.attackWordsQueue, ...words];
+    this.attackWords = [...this.attackWords, ...words];
   }
 }
 
